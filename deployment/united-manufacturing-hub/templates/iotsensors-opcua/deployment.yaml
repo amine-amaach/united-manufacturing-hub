@@ -1,0 +1,52 @@
+---
+{{if .Values._000_commonConfig.datasources.iotsensorsopcua.enabled}}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{include "united-manufacturing-hub.fullname" .}}-iotsensorsopcua
+  labels:
+    {{- include "united-manufacturing-hub.labels.iotsensorsopcua" . | nindent 4}}
+    app.kubernetes.io/component: "iotsensorsopcua"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "united-manufacturing-hub.labels.iotsensorsopcua" . | nindent 6}}
+      app.kubernetes.io/component: "iotsensorsopcua"
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        {{- include "united-manufacturing-hub.labels.iotsensorsopcua" . | nindent 8}}
+        app.kubernetes.io/component: "iotsensorsopcua"
+    spec:
+      hostname: umh-iotsensors-opcua
+      volumes:
+        - name: iotsensors-opcua-config
+          configMap:
+            name: {{include "united-manufacturing-hub.fullname" .}}-iotsensors-opcua
+      containers:
+        - name: {{include "united-manufacturing-hub.fullname" .}}-iotsensorsopcua
+          {{if .Values.iotsensorsopcua.tag}}
+          image: {{.Values.iotsensorsopcua.image}}:{{.Values.iotsensorsopcua.tag}}
+          {{- else}}
+          image: {{.Values.iotsensorsopcua.image}}:latest
+          {{end}}
+          resources:
+            limits:
+              cpu: {{.Values.iotsensorsopcua.resources.limits.cpu}}
+              memory: {{.Values.iotsensorsopcua.resources.limits.memory}}
+            requests:
+              cpu: {{.Values.iotsensorsopcua.resources.requests.cpu}}
+              memory: {{.Values.iotsensorsopcua.resources.requests.memory}}
+          volumeMounts:
+            - mountPath: /configs
+              name: iotsensors-opcua-config
+          ports:
+            - name: opcua-sim
+              containerPort: {{.Values.iotsensorsopcua.port}}
+              protocol: TCP
+
+{{end}}

@@ -1,0 +1,16 @@
+---
+{{if .Values._000_commonConfig.datasources.iotsensorsopcua.enabled}}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: umh-iotsensors-opcua
+spec:
+  selector:
+    {{- include "united-manufacturing-hub.labels.iotsensorsopcua" . | nindent 4}}
+  ports:
+    - protocol: TCP
+      port: {{.Values.iotsensorsopcua.port}}
+      targetPort: {{.Values.iotsensorsopcua.port}}
+
+{{end}}
