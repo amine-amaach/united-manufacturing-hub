@@ -43,6 +43,11 @@ _000_commonConfig:
     iotsensorsmqtt:
       enabled: true
 
+    # iotsensorsopcua simulates IoT sensor data and publishes it over OPCUA.
+    # Learn more : https://github.com/amine-amaach/simulators/tree/main/ioTSensorsOPCUA
+    iotsensorsopcua:
+      enabled: true
+
   # dataprocessing involves microservices, whose main purpose is to process the data
   dataprocessing:
     nodered:
@@ -1131,6 +1136,19 @@ cameraconnect:
 iotsensorsmqtt:
   image: amineamaach/sensors-mqtt
   tag: v1.0.0
+  resources:
+    requests:
+      cpu: "10m"
+      memory: "20Mi"
+    limits:
+      cpu: "100m"
+      memory: "100Mi"
+
+### iotsensorsopcua ###
+iotsensorsopcua:
+  image: amineamaach/sensors-opcua
+  tag: v1.0.0
+  port: 46010
   resources:
     requests:
       cpu: "10m"
