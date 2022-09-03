@@ -162,6 +162,14 @@ app.kubernetes.io/name: {{ include "united-manufacturing-hub.name" . }}-iotsenso
 {{- end }}
 
 {{/*
+Labels for iotsensorsopcua
+*/}}
+{{- define "united-manufacturing-hub.labels.iotsensorsopcua" -}}
+app.kubernetes.io/name: {{ include "united-manufacturing-hub.name" . }}-iotsensorsopcua
+{{ include "united-manufacturing-hub.labels.common" . }}
+{{- end }}
+
+{{/*
 Labels for vernemq
 */}}
 {{- define "united-manufacturing-hub.labels.vernemq" -}}
